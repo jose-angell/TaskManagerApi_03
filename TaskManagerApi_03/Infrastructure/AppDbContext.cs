@@ -7,7 +7,7 @@ namespace TaskManagerApi_03.Infrastructure
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Employee> Employees => Set<Employee>();
-        public DbSet<Domain.Task> Tasks => Set<Domain.Task>();
+        public DbSet<Tasks> Tasks => Set<Tasks>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

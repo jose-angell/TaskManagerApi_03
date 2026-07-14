@@ -10,5 +10,7 @@ namespace TaskManagerApi_03.Dtos.Employees
         public string Email { get; set; }
         [Required(ErrorMessage = "El departamento es obligatorio.")]
         public string Department { get; set; }
+        [Required(ErrorMessage = "El estado activo es obligatorio.")]
+        public bool IsActive { get; set; }
     }
 }

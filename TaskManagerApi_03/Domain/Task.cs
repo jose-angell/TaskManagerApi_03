@@ -1,6 +1,6 @@
 ﻿namespace TaskManagerApi_03.Domain
 {
-    public class Task
+    public class Tasks
     {
         public Guid Id { get; private set; }
         public string Title { get; private set; }
@@ -11,7 +11,7 @@
         public DateTimeOffset CreateAt { get; private set; }
         public Guid EmployeeId { get; private set; }
         public Employee? Employee { get; set; } 
-        private Task()
+        private Tasks()
         {
             Title = string.Empty;
             Description = string.Empty;
@@ -19,7 +19,7 @@
             Status = string.Empty;
             EmployeeId = Guid.Empty;
         }
-        public Task(string title, string description, string priority, string status, DateTimeOffset dueDate, Guid employeeId)
+        public Tasks(string title, string description, string priority, string status, DateTimeOffset dueDate, Guid employeeId)
         {
             if (string.IsNullOrWhiteSpace(title))
             {

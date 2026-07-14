@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskManagerApi_03.Domain;
 
 namespace TaskManagerApi_03.Infrastructure
 {
-    public class TaskConfiguration: IEntityTypeConfiguration<Domain.Task>
+    public class TaskConfiguration: IEntityTypeConfiguration<Tasks>
     {
-        public void Configure(EntityTypeBuilder<Domain.Task> builder)
+        public void Configure(EntityTypeBuilder<Tasks> builder)
         {
             builder.ToTable("tasks");
             builder.HasKey(t => t.Id);

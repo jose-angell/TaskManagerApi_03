@@ -7,7 +7,7 @@
         public string Email { get; private set; }
         public string Department { get; private set; }
         public bool IsActive { get; private set; }
-        public ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
         private Employee()
         {
             Name = string.Empty;
