@@ -1,4 +1,5 @@
 ﻿using TaskManagerApi_03.Domain;
+using TaskManagerApi_03.Dtos.Employees;
 
 namespace TaskManagerApi_03.Dtos.Tasks
 {
@@ -11,6 +12,6 @@ namespace TaskManagerApi_03.Dtos.Tasks
         public string Status { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public DateTimeOffset CreateAt { get; set; }
-        public Employee? Employee { get; set; }
+        public EmployeeDto? Employee { get; set; }
     }
 }

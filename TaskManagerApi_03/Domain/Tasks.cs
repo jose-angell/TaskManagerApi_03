@@ -50,7 +50,7 @@
             CreateAt = DateTimeOffset.UtcNow;
             EmployeeId = employeeId;
         }
-        public void Update(string title, string description, string priority, string status, DateTimeOffset dueDate)
+        public void Update(string title, string description, string priority, string status, DateTimeOffset dueDate, Guid employeeId)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -73,6 +73,7 @@
             Priority = priority;
             Status = status;
             DueDate = dueDate;
+            EmployeeId = employeeId;
         }
 
     }
