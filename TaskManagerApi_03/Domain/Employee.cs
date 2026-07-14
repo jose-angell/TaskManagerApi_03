@@ -34,7 +34,7 @@
             Department = department;
             IsActive = true;
         }
-        public void Update(string name, string email, string department)
+        public void Update(string name, string email, string department, bool isActive)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -51,6 +51,7 @@
             Name = name;
             Email = email;
             Department = department;
+            IsActive = isActive;
         }
     }
 }

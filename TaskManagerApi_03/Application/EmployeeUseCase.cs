@@ -30,7 +30,7 @@ namespace TaskManagerApi_03.Application
             await _context.SaveChangesAsync();
             return MapToDto(employee);
         }
-        public async System.Threading.Tasks.Task Update(Guid id, UpdateEmployee request)
+        public async Task Update(Guid id, UpdateEmployee request)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
@@ -38,6 +38,16 @@ namespace TaskManagerApi_03.Application
                 throw new InvalidOperationException("Empleado no encontrado.");
             }
             employee.Update(request.Name, request.Email, request.Department, request.IsActive);
+            await _context.SaveChangesAsync();
+        }
+        public async Task Delete(Guid id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
+            {
+                throw new InvalidOperationException("Empleado no encontrado.");
+            }
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
         }
         public async Task<EmployeeDto?> GetById(Guid id)
