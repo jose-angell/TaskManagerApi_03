@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TaskManagerApi_03.Application;
 using TaskManagerApi_03.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddScoped<EmployeeUseCase>();
+builder.Services.AddScoped<TaskUseCase>();
 
 var app = builder.Build();
 
