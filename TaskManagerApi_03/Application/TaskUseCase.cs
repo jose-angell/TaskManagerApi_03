@@ -56,9 +56,13 @@ namespace TaskManagerApi_03.Application
             }
             return MapToDto(task);
         }
-        public async Task<IEnumerable<TaskDto>> GetAll()
+        public async Task<IEnumerable<TaskDto>> GetAll(string? status, string? searchTerm)
         {
-            var tasks = await _context.Tasks.ToListAsync();
+            var tasks = await _context.Tasks
+                .Where(t => (string.IsNullOrEmpty(status) || t.Status == status) &&
+                (string.IsNullOrEmpty(searchTerm) || t.Title.ToLower().Contains(searchTerm.ToLower())
+                                                  || t.Description.ToLower().Contains(searchTerm.ToLower()))
+                ).ToListAsync();
             return tasks.Select(MapToDto);
         }
         private TaskDto MapToDto(Tasks tasks) => new TaskDto
