@@ -15,6 +15,9 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<TaskDto> Create(CreateTask request)
         {
+            bool employeeExists = await _context.Employees.AnyAsync(e => e.Id == request.EmployeeId);
+            if (!employeeExists) throw new InvalidOperationException("El empleado asignado no existe.");
+
             var task = new Tasks(
                 request.Title,
                 request.Description,
@@ -29,6 +32,9 @@ namespace TaskManagerApi_03.Application
         }
         public async Task Update(Guid id, UpdateTask request)
         {
+            bool employeeExists = await _context.Employees.AnyAsync(e => e.Id == request.EmployeeId);
+            if (!employeeExists) throw new InvalidOperationException("El empleado asignado no existe.");
+
             var task = await _context.Tasks.FindAsync(id);
             if (task == null)
             {

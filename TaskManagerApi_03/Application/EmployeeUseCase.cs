@@ -15,8 +15,8 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<EmployeeDto> Create(CreateEmployee request)
         {
-            var existingEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.Email == request.Email);
-            if (existingEmployee != null)
+            var existingEmployee = await _context.Employees.AnyAsync(e => e.Email == request.Email);
+            if (existingEmployee)
             {
                 throw new InvalidOperationException("El empleado con el mismo correo electrónico ya existe.");
             }
