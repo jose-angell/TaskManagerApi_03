@@ -1,4 +1,6 @@
-﻿namespace TaskManagerApi_03.Domain
+﻿using TaskManagerApi_03.Domain.Exceptions;
+
+namespace TaskManagerApi_03.Domain
 {
     public class Employee
     {
@@ -18,15 +20,15 @@
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("Name cannot be null or empty.", nameof(name));
+                throw new DomainException("Name cannot be null or empty.", nameof(name));
             }
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+                throw new DomainException("Email cannot be null or empty.", nameof(email));
             }
             if (string.IsNullOrWhiteSpace(department))
             {
-                throw new ArgumentException("Department cannot be null or empty.", nameof(department));
+                throw new DomainException("Department cannot be null or empty.", nameof(department));
             }
             Id = Guid.NewGuid();
             Name = name;
@@ -38,15 +40,15 @@
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("Name cannot be null or empty.", nameof(name));
+                throw new DomainException("Name cannot be null or empty.", nameof(name));
             }
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+                throw new DomainException("Email cannot be null or empty.", nameof(email));
             }
             if (string.IsNullOrWhiteSpace(department))
             {
-                throw new ArgumentException("Department cannot be null or empty.", nameof(department));
+                throw new DomainException("Department cannot be null or empty.", nameof(department));
             }
             Name = name;
             Email = email;

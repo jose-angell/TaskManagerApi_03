@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManagerApi_03.Domain;
+using TaskManagerApi_03.Domain.Exceptions;
 using TaskManagerApi_03.Dtos.Employees;
 using TaskManagerApi_03.Dtos.Tasks;
 using TaskManagerApi_03.Infrastructure;
@@ -16,7 +17,7 @@ namespace TaskManagerApi_03.Application
         public async Task<TaskDto> Create(CreateTask request)
         {
             bool employeeExists = await _context.Employees.AnyAsync(e => e.Id == request.EmployeeId);
-            if (!employeeExists) throw new InvalidOperationException("El empleado asignado no existe.");
+            if (!employeeExists) throw new NotFoundException("El empleado asignado no existe.");
 
             var task = new Tasks(
                 request.Title,
@@ -33,12 +34,12 @@ namespace TaskManagerApi_03.Application
         public async Task Update(Guid id, UpdateTask request)
         {
             bool employeeExists = await _context.Employees.AnyAsync(e => e.Id == request.EmployeeId);
-            if (!employeeExists) throw new InvalidOperationException("El empleado asignado no existe.");
+            if (!employeeExists) throw new NotFoundException("El empleado asignado no existe.");
 
             var task = await _context.Tasks.FindAsync(id);
             if (task == null)
             {
-                throw new InvalidOperationException("Tarea no encontrada.");
+                throw new NotFoundException("Tarea no encontrada.");
             }
             task.Update(request.Title, request.Description, request.Priority, request.Status, request.DueDate, request.EmployeeId);
             await _context.SaveChangesAsync();
@@ -48,7 +49,7 @@ namespace TaskManagerApi_03.Application
             var task = await _context.Tasks.FindAsync(id);
             if (task == null)
             {
-                throw new InvalidOperationException("Tarea no encontrada.");
+                throw new NotFoundException("Tarea no encontrada.");
             }
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();

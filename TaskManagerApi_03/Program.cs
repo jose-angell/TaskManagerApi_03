@@ -16,9 +16,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<EmployeeUseCase>();
 builder.Services.AddScoped<TaskUseCase>();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

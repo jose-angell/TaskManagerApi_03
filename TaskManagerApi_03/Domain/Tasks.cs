@@ -1,4 +1,6 @@
-﻿namespace TaskManagerApi_03.Domain
+﻿using TaskManagerApi_03.Domain.Exceptions;
+
+namespace TaskManagerApi_03.Domain
 {
     public class Tasks
     {
@@ -23,23 +25,23 @@
         {
             if (string.IsNullOrWhiteSpace(title))
             {
-                throw new ArgumentException("Title cannot be null or empty.", nameof(title));
+                throw new DomainException("Title cannot be null or empty.", nameof(title));
             }
             if (string.IsNullOrWhiteSpace(description))
             {
-                throw new ArgumentException("Description cannot be null or empty.", nameof(description));
+                throw new DomainException("Description cannot be null or empty.", nameof(description));
             }
             if (string.IsNullOrWhiteSpace(priority))
             {
-                throw new ArgumentException("Priority cannot be null or empty.", nameof(priority));
+                throw new DomainException("Priority cannot be null or empty.", nameof(priority));
             }
             if (string.IsNullOrWhiteSpace(status))
             {
-                throw new ArgumentException("Status cannot be null or empty.", nameof(status));
+                throw new DomainException("Status cannot be null or empty.", nameof(status));
             }
             if (employeeId == Guid.Empty)
             {
-                throw new ArgumentException("EmployeeId cannot be empty.", nameof(employeeId));
+                throw new DomainException("EmployeeId cannot be empty.", nameof(employeeId));
             }
             Id = Guid.NewGuid();
             Title = title;
@@ -54,19 +56,19 @@
         {
             if (string.IsNullOrWhiteSpace(title))
             {
-                throw new ArgumentException("Title cannot be null or empty.", nameof(title));
+                throw new DomainException("Title cannot be null or empty.", nameof(title));
             }
             if (string.IsNullOrWhiteSpace(description))
             {
-                throw new ArgumentException("Description cannot be null or empty.", nameof(description));
+                throw new DomainException("Description cannot be null or empty.", nameof(description));
             }
             if (string.IsNullOrWhiteSpace(priority))
             {
-                throw new ArgumentException("Priority cannot be null or empty.", nameof(priority));
+                throw new DomainException("Priority cannot be null or empty.", nameof(priority));
             }
             if (string.IsNullOrWhiteSpace(status))
             {
-                throw new ArgumentException("Status cannot be null or empty.", nameof(status));
+                throw new DomainException("Status cannot be null or empty.", nameof(status));
             }
             Title = title;
             Description = description;

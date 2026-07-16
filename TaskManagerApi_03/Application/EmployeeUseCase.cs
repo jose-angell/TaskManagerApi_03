@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManagerApi_03.Domain;
+using TaskManagerApi_03.Domain.Exceptions;
 using TaskManagerApi_03.Dtos.Employees;
 using TaskManagerApi_03.Dtos.Tasks;
 using TaskManagerApi_03.Infrastructure;
@@ -18,7 +19,7 @@ namespace TaskManagerApi_03.Application
             var existingEmployee = await _context.Employees.AnyAsync(e => e.Email == request.Email);
             if (existingEmployee)
             {
-                throw new InvalidOperationException("El empleado con el mismo correo electrónico ya existe.");
+                throw new ConflictException("El empleado con el mismo correo electrónico ya existe.");
             }
 
             var employee = new Employee(
@@ -35,7 +36,7 @@ namespace TaskManagerApi_03.Application
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
-                throw new InvalidOperationException("Empleado no encontrado.");
+                throw new NotFoundException("Empleado no encontrado.");
             }
             employee.Update(request.Name, request.Email, request.Department, request.IsActive);
             await _context.SaveChangesAsync();
@@ -45,7 +46,7 @@ namespace TaskManagerApi_03.Application
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
-                throw new InvalidOperationException("Empleado no encontrado.");
+                throw new NotFoundException("Empleado no encontrado.");
             }
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
