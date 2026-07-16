@@ -49,7 +49,7 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<TaskDto?> GetById(Guid id)
         {
-            var task = await _context.Tasks.FindAsync(id);
+            var task = await _context.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
             if (task == null)
             {
                 return null;
@@ -58,7 +58,7 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<IEnumerable<TaskDto>> GetAll(string? status, string? searchTerm)
         {
-            var tasks = await _context.Tasks
+            var tasks = await _context.Tasks.AsNoTracking()
                 .Where(t => (string.IsNullOrEmpty(status) || t.Status == status) &&
                 (string.IsNullOrEmpty(searchTerm) || t.Title.ToLower().Contains(searchTerm.ToLower())
                                                   || t.Description.ToLower().Contains(searchTerm.ToLower()))

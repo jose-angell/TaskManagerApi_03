@@ -52,7 +52,7 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<EmployeeDto?> GetById(Guid id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
             if (employee == null)
             {
                 return null;
@@ -61,7 +61,7 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<IEnumerable<EmployeeDto>> GetAll()
         {
-            var employees = await _context.Employees.Include(e => e.Tasks).ToListAsync();
+            var employees = await _context.Employees.AsNoTracking().Include(e => e.Tasks).ToListAsync();
             return employees.Select(MapToDto);
         }
         private static EmployeeDto MapToDto(Employee employee) => new EmployeeDto
