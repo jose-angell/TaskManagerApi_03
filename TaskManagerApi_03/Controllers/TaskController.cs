@@ -59,5 +59,23 @@ namespace TaskManagerApi_03.Controllers
             var tasks = await _useCase.GetAll(status, search);
             return Ok(tasks);
         }
+        [HttpGet("/pending")]
+        public async Task<IActionResult> GetPendingTasks()
+        {
+            var tasks = await _useCase.GetPendingTasks();
+            return Ok(tasks);
+        }
+        [HttpGet("/overdue")]
+        public async Task<IActionResult> GetOverdueTasks()
+        {
+            var tasks = await _useCase.GetTasksOverdue();
+            return Ok(tasks);
+        }
+        [HttpGet("/priority={priority:string}")]
+        public async Task<IActionResult> GetTasksByPriority([FromRoute] string priority)
+        {
+            var tasks = await _useCase.GetByPriority(priority);
+            return Ok(tasks);
+        }
     }
 }

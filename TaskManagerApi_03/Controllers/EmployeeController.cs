@@ -9,9 +9,11 @@ namespace TaskManagerApi_03.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly EmployeeUseCase _useCase;
-        public EmployeeController(EmployeeUseCase useCase)
+        public readonly TaskUseCase _taskUseCase;
+        public EmployeeController(EmployeeUseCase useCase, TaskUseCase taskUseCase)
         {
             _useCase = useCase;
+            _taskUseCase = taskUseCase;
         }
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
@@ -58,6 +60,16 @@ namespace TaskManagerApi_03.Controllers
             }
             await _useCase.Delete(id);
             return NoContent();
+        }
+        [HttpGet("{id:guid}/tasks")]
+        public async Task<IActionResult> GetTasks([FromRoute] Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Invalid employee ID.");
+            }
+            var tasks = await _taskUseCase.GetByEmployeeId(id);
+            return Ok(tasks);
         }
     }
 }

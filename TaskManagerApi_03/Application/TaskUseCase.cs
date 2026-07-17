@@ -19,6 +19,9 @@ namespace TaskManagerApi_03.Application
             bool employeeExists = await _context.Employees.AnyAsync(e => e.Id == request.EmployeeId);
             if (!employeeExists) throw new NotFoundException("El empleado asignado no existe.");
 
+            bool employeeIsActive = await _context.Employees.AnyAsync(_ => _.Id == request.EmployeeId && _.IsActive);
+            if (!employeeIsActive) throw new ConflictException("El empleado asignado no está activo.");
+
             var task = new Tasks(
                 request.Title,
                 request.Description,
@@ -70,6 +73,26 @@ namespace TaskManagerApi_03.Application
                 (string.IsNullOrEmpty(searchTerm) || t.Title.ToLower().Contains(searchTerm.ToLower())
                                                   || t.Description.ToLower().Contains(searchTerm.ToLower()))
                 ).ToListAsync();
+            return tasks.Select(MapToDto);
+        }
+        public async Task<IEnumerable<TaskDto>> GetByEmployeeId(Guid employeeId)
+        {
+            var tasks = await _context.Tasks.AsNoTracking().Where(t => t.EmployeeId == employeeId).ToListAsync();
+            return tasks.Select(MapToDto);
+        }
+        public async Task<IEnumerable<TaskDto>> GetPendingTasks()
+        {
+            var tasks = await _context.Tasks.AsNoTracking().Where(tasks => tasks.Status == "Pending").ToListAsync();
+            return tasks.Select(MapToDto);
+        }
+        public async Task<IEnumerable<TaskDto>> GetTasksOverdue()
+        {
+            var tasks = await _context.Tasks.AsNoTracking().Where(t => t.DueDate < DateTimeOffset.Now && t.Status == "Pending").ToListAsync();
+            return tasks.Select(MapToDto);
+        }
+        public async Task<IEnumerable<TaskDto>> GetByPriority(string priority)
+        {
+            var tasks = await _context.Tasks.AsNoTracking().Where(t => t.Priority == priority).ToListAsync();
             return tasks.Select(MapToDto);
         }
         private TaskDto MapToDto(Tasks tasks) => new TaskDto

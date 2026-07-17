@@ -43,6 +43,10 @@ namespace TaskManagerApi_03.Domain
             {
                 throw new DomainException("EmployeeId cannot be empty.", nameof(employeeId));
             }
+            if (dueDate < DateTimeOffset.UtcNow)
+            {
+                throw new DomainException("DueDate cannot be in the past.", nameof(dueDate));
+            }
             Id = Guid.NewGuid();
             Title = title;
             Description = description;
