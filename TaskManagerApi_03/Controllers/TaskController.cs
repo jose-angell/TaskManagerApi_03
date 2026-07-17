@@ -21,10 +21,7 @@ namespace TaskManagerApi_03.Controllers
                 return BadRequest("Invalid task ID.");
             }
             var task = await _useCase.GetById(id);
-            if (task == null)
-            {
-                return NotFound();
-            }
+            
             return Ok(task);
         }
         [HttpPost]

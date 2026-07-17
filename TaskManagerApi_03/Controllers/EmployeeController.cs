@@ -23,10 +23,7 @@ namespace TaskManagerApi_03.Controllers
                 return BadRequest("Invalid employee ID.");
             }
             var employee = await _useCase.GetById(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
+            
             return Ok(employee);
         }
         [HttpGet]

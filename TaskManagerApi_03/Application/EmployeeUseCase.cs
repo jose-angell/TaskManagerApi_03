@@ -38,6 +38,11 @@ namespace TaskManagerApi_03.Application
             {
                 throw new NotFoundException("Empleado no encontrado.");
             }
+            var existingEmployee = await _context.Employees.AnyAsync(e => e.Email == request.Email);
+            if (existingEmployee)
+            {
+                throw new ConflictException("El empleado con el mismo correo electrónico ya existe.");
+            }
             employee.Update(request.Name, request.Email, request.Department, request.IsActive);
             await _context.SaveChangesAsync();
         }
@@ -56,7 +61,7 @@ namespace TaskManagerApi_03.Application
             var employee = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
             if (employee == null)
             {
-                return null;
+                throw new NotFoundException("Empleado no encontrado.");
             }
             return MapToDto(employee);
         }

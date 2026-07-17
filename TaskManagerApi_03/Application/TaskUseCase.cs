@@ -59,16 +59,17 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<TaskDto?> GetById(Guid id)
         {
-            var task = await _context.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+            var task = await _context.Tasks.AsNoTracking().Include(t => t.Employee)
+                .FirstOrDefaultAsync(t => t.Id == id);
             if (task == null)
             {
-                return null;
+                throw new NotFoundException("Tarea no encontrada.");
             }
             return MapToDto(task);
         }
         public async Task<IEnumerable<TaskDto>> GetAll(string? status, string? searchTerm)
         {
-            var tasks = await _context.Tasks.AsNoTracking()
+            var tasks = await _context.Tasks.AsNoTracking().Include(t => t.Employee)
                 .Where(t => (string.IsNullOrEmpty(status) || t.Status == status) &&
                 (string.IsNullOrEmpty(searchTerm) || t.Title.ToLower().Contains(searchTerm.ToLower())
                                                   || t.Description.ToLower().Contains(searchTerm.ToLower()))
@@ -77,22 +78,26 @@ namespace TaskManagerApi_03.Application
         }
         public async Task<IEnumerable<TaskDto>> GetByEmployeeId(Guid employeeId)
         {
-            var tasks = await _context.Tasks.AsNoTracking().Where(t => t.EmployeeId == employeeId).ToListAsync();
+            var tasks = await _context.Tasks.AsNoTracking().Include(t => t.Employee)
+                .Where(t => t.EmployeeId == employeeId).ToListAsync();
             return tasks.Select(MapToDto);
         }
         public async Task<IEnumerable<TaskDto>> GetPendingTasks()
         {
-            var tasks = await _context.Tasks.AsNoTracking().Where(tasks => tasks.Status == "Pending").ToListAsync();
+            var tasks = await _context.Tasks.AsNoTracking().Include(t => t.Employee)
+                .Where(tasks => tasks.Status == "Pending").ToListAsync();
             return tasks.Select(MapToDto);
         }
         public async Task<IEnumerable<TaskDto>> GetTasksOverdue()
         {
-            var tasks = await _context.Tasks.AsNoTracking().Where(t => t.DueDate < DateTimeOffset.Now && t.Status == "Pending").ToListAsync();
+            var tasks = await _context.Tasks.AsNoTracking().Include(t => t.Employee)
+                .Where(t => t.DueDate < DateTimeOffset.Now && t.Status == "Pending").ToListAsync();
             return tasks.Select(MapToDto);
         }
         public async Task<IEnumerable<TaskDto>> GetByPriority(string priority)
         {
-            var tasks = await _context.Tasks.AsNoTracking().Where(t => t.Priority == priority).ToListAsync();
+            var tasks = await _context.Tasks.AsNoTracking().Include(t => t.Employee)
+                .Where(t => t.Priority == priority).ToListAsync();
             return tasks.Select(MapToDto);
         }
         private TaskDto MapToDto(Tasks tasks) => new TaskDto

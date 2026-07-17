@@ -12,7 +12,7 @@ namespace TaskManagerApi_03.Domain
         public DateTimeOffset DueDate { get; private set; }
         public DateTimeOffset CreateAt { get; private set; }
         public Guid EmployeeId { get; private set; }
-        public Employee? Employee { get; set; } 
+        public Employee? Employee { get; private set; } 
         private Tasks()
         {
             Title = string.Empty;
@@ -73,6 +73,10 @@ namespace TaskManagerApi_03.Domain
             if (string.IsNullOrWhiteSpace(status))
             {
                 throw new DomainException("Status cannot be null or empty.", nameof(status));
+            }
+            if (dueDate < DateTimeOffset.UtcNow)
+            {
+                throw new DomainException("DueDate cannot be in the past.", nameof(dueDate));
             }
             Title = title;
             Description = description;
